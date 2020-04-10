@@ -3,51 +3,37 @@ page_type: sample
 languages:
 - csharp
 products:
-- dotnet
-description: "Add 150 character max description"
-urlFragment: "update-this-to-unique-url-stub"
+- office-teams
+description: Microsoft Teams bot and messaging extesion to search & report incidents and connect with specialists immediately
+urlFragment: microsoft-teams-apps-incidentreport
 ---
 
-# Official Microsoft Sample
+| [Documentation](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Home) | [Deployment guide](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Deployment-Guide) | [Architecture](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Solution-Overview) |
+| ---- | ---- | ---- |
 
-<!-- 
-Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
+Many large organizations today have rudimentary methods to report incidents. They rely on chat based messaging, e-mail and/or other adhoc channels to inform necessary parties about new incidents. Additionally, the information isn't usually easily auditable for root cause analyses/post mortems due to transient/one-off nature of e-mail or chat based messaging systems.
 
-Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
+Using Incident Reporter bot in Microsoft Teams, helps you to easily and quickly respond to, report and document incidents which would help  to deal with that incident responsibly.
+- automates the collection of the time, date and location of every incident
+- customizable incident reporting form based on your workplace needs
+- incidents reports in specialists team which allows for quick notification to the concerned people and track it to completion
 
-Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
--->
+## Legal Notice
+Please read the license terms applicable to this app template [here](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/blob/master/LICENSE). In addition to these terms, by using this app template you agree to the following:
 
-Give a short description for your sample here. What does it do and why is it important?
+* You are responsible for complying with applicable privacy and security regulations related to use, collection and handling of any personal data by your app.  This includes complying with all internal privacy and security policies of your organization if your app is developed to be sideloaded internally within your organization.
 
-## Contents
+* Microsoft will have no access to data collected through your app. Microsoft will not be responsible for any data related incidents or data subject requests.
 
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
+* Any trademarks or registered trademarks of Microsoft in the United States and/or other countries and logos included in this repository are the property of Microsoft, and the license for this project does not grant you rights to use any Microsoft names, logos or trademarks outside of this repository.  Microsoft’s general trademark guidelines can be found [here](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general.aspx)
 
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
-| `.gitignore`      | Define what to ignore at commit time.      |
-| `CHANGELOG.md`    | List of changes to the sample.             |
-| `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
-| `README.md`       | This README file.                          |
-| `LICENSE`         | The license for the sample.                |
+* Use of this template does not guarantee acceptance of your app to the Teams app store.  To make this app available in the Teams app store, you will have to comply with [submission process and validation](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/deploy-and-publish/appsource/publish), and all associated requirements such as including your own privacy statement and terms of use for your app. 
 
-## Prerequisites
+## Getting started
 
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
+Begin with the [Solution overview](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Solution-overview) to read about what the app does and how it works.
 
-## Setup
-
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
-
-## Running the sample
-
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
-
-## Key concepts
-
-Provide users with more context on the tools and services used in the sample. Explain some of the code that is being used and how services interact with each other.
+When you're ready to try out Incident Reporter bot, or to use it in your own organization, follow the steps in the [Deployment guide](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/DeployementGuide).
 
 ## Contributing
 

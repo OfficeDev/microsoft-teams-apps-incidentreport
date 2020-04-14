@@ -24,25 +24,10 @@
         "description": "The client secret of the bot Azure AD app."
       }
     },
-    "configAppClientId": {
-      "type": "string",
-      "minLength": 36,
-      "maxLength": 36,
-      "metadata": {
-        "description": "The client ID of the of the configuration Azure AD app, e.g., 123e4567-e89b-12d3-a456-426655440000."
-      }
-    },
-    "configAdminUPNList": {
-      "type": "string",
-      "minLength": 1,
-      "metadata": {
-        "description": "Semicolon-delimited list of the user principal names (UPNs) allowed to access the configuration app."
-      }
-    },
     "appDisplayName": {
       "type": "string",
       "minLength": 1,
-      "defaultValue": "Incident reporter",
+      "defaultValue": "Incident Reporter",
       "metadata": {
         "description": "App display name."
       }
@@ -74,14 +59,17 @@
     },
     "teamLink": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "metadata": {
+        "description": "URL link to the team of experts in Microsoft Teams, to which the app will send support request notifications. This URL starts with https://teams.microsoft.com/l/team/"
+      }
     },
     "tokenEncryptionKey": {
       "type": "string",
       "minLength": 13,
       "defaultValue": "[concat(uniqueString(newGuid()), uniqueString(newGuid()))]",
       "metadata": {
-        "description": "A secret used to further encrypt stored tokens at rest."
+        "description": "Unique key use to create Symmetric security key for generating custom JWT for client authentication"
       }
     },
     "sku": {
@@ -103,7 +91,7 @@
         "2",
         "3"
       ],
-      "defaultValue": "2",
+      "defaultValue": "1",
       "metadata": {
         "description": "The size of the hosting plan (small, medium, or large)."
       }
@@ -139,31 +127,6 @@
         "description": "The branch of the GitHub repository to deploy."
       },
       "defaultValue": "master"
-    },
-    "default": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "Information"
-    },
-    "microsoft": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "Information"
-    },
-    "allowedHosts": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "*"
-    },
-    "defaultCulture": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "en-US"
-    },
-    "supportedCultures": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "en-US,fr-Fr"
     }
   },
   "variables": {
@@ -255,7 +218,7 @@
             },
             {
               "name": "Logging:LogLevel:Default",
-              "value": "[parameters('default')]"
+              "value": "Information"
             },
             {
               "name": "ApplicationInsights:InstrumentationKey",
@@ -263,15 +226,15 @@
             },
             {
               "name": "ApplicationInsights:LogLevel:Default",
-              "value": "[parameters('default')]"
+              "value": "Information"
             },
             {
               "name": "ApplicationInsights:LogLevel:Microsoft",
-              "value": "[parameters('microsoft')]"
+              "value": "Information"
             },
             {
               "name": "AllowedHosts",
-              "value": "[parameters('allowedHosts')]"
+              "value": "*"
             },
             {
               "name": "MicrosoftAppId",
@@ -294,8 +257,8 @@
               "value": "[parameters('teamLink')]"
             },
             {
-                "name": "Card:DefaultCardTemplate",
-                "value": "[[{\"type\": \"Input.Date\",\"id\": \"First observed on_IssueOccuredOn\",\"max\":\"_maxDate_\",\"value\": \"_issueDate_\"},{\"type\": \"TextBlock\",\"id\": \"Validation Message_ValidationMessage\",\"text\": \"_dateValidationText_\",\"spacing\": \"None\",\"color\": \"Attention\",\"isVisible\": \"_showDateValidation_\"}]"
+              "name": "Card:DefaultCardTemplate",
+              "value": "[[{\"type\": \"Input.Date\",\"id\": \"First observed on_IssueOccuredOn\",\"max\":\"_maxDate_\",\"value\": \"_issueDate_\"},{\"type\": \"TextBlock\",\"id\": \"Validation Message_ValidationMessage\",\"text\": \"_dateValidationText_\",\"spacing\": \"None\",\"color\": \"Attention\",\"isVisible\": \"_showDateValidation_\"}]"
             },
             {
               "name": "Storage:ConnectionString",
@@ -307,11 +270,11 @@
             },
             {
               "name": "i18n:DefaultCulture",
-              "value": "[parameters('defaultCulture')]"
+              "value": "en-US"
             },
             {
               "name": "i18n:SupportedCultures",
-              "value": "[parameters('supportedCultures')]"
+              "value": "en-US"
             },
             {
               "name": "Search:SearchServiceName",

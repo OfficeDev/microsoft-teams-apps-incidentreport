@@ -8,12 +8,10 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using AdaptiveCards;
     using Microsoft.ApplicationInsights;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Builder.Teams;
     using Microsoft.Bot.Connector.Authentication;
@@ -27,6 +25,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
     using Microsoft.Teams.Apps.RemoteSupport.Common.Providers;
     using Microsoft.Teams.Apps.RemoteSupport.Models;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Class that handles the card configuration.
@@ -79,12 +78,11 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         /// </summary>
         /// <param name="applicationBasePath">Represents the Application base Uri.</param>
         /// <param name="customAPIAuthenticationToken">JWT token.</param>
-        /// <param name="taskModuleRequestData">Task module invoke request value payload.</param>
         /// <param name="telemetryClient">The Application Insights telemetry client.</param>
         /// <param name="activityId">Task module activity Id.</param>
         /// <param name="localizer">The current cultures' string localizer.</param>
         /// <returns>Returns task module response.</returns>
-        public static TaskModuleResponse GetTaskModuleResponse(string applicationBasePath, string customAPIAuthenticationToken, TaskModuleRequest taskModuleRequestData, TelemetryClient telemetryClient, string activityId, IStringLocalizer<Strings> localizer)
+        public static TaskModuleResponse GetTaskModuleResponse(string applicationBasePath, string customAPIAuthenticationToken, TelemetryClient telemetryClient, string activityId, IStringLocalizer<Strings> localizer)
         {
             return new TaskModuleResponse
             {
@@ -104,14 +102,12 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         /// <summary>
         /// Gets edit ticket details adaptive card.
         /// </summary>
-        /// <param name="environment">Current environment.</param>
         /// <param name="cardConfigurationStorageProvider">Card configuration.</param>
         /// <param name="ticketDetail">Details of the ticket to be edited.</param>
-        /// <param name="showValidationMessage">Determines whether to show validation message on screen or not.</param>
         /// <param name="localizer">The current cultures' string localizer.</param>
         /// <param name="existingTicketDetail">Existing ticket details.</param>
         /// <returns>Returns edit ticket adaptive card.</returns>
-        public static TaskModuleResponse GetEditTicketAdaptiveCard(IHostingEnvironment environment, ICardConfigurationStorageProvider cardConfigurationStorageProvider, TicketDetail ticketDetail, bool showValidationMessage, IStringLocalizer<Strings> localizer, TicketDetail existingTicketDetail = null)
+        public static TaskModuleResponse GetEditTicketAdaptiveCard(ICardConfigurationStorageProvider cardConfigurationStorageProvider, TicketDetail ticketDetail, IStringLocalizer<Strings> localizer, TicketDetail existingTicketDetail = null)
         {
             var cardTemplate = cardConfigurationStorageProvider?.GetConfigurationsByCardIdAsync(ticketDetail?.CardId).Result;
             return new TaskModuleResponse
@@ -120,7 +116,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
                 {
                     Value = new TaskModuleTaskInfo()
                     {
-                        Card = EditRequestCard.GetEditRequestCard(environment, ticketDetail, cardTemplate, localizer, showValidationMessage, existingTicketDetail),
+                        Card = EditRequestCard.GetEditRequestCard(ticketDetail, cardTemplate, localizer, existingTicketDetail),
                         Height = TaskModuleHeight,
                         Width = TaskModuleWidth,
                         Title = localizer.GetString("EditRequestTitle"),
@@ -332,15 +328,16 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         /// <param name="messageActivity">Message activity of bot.</param>
         /// <param name="applicationBasePath"> Represents the Application base Uri.</param>
         /// <param name="localizer">The current cultures' string localizer.</param>
-        /// <param name="logger">application logger.</param>
+        /// <param name="logger">Telemetry logger.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>task that updates card.</returns>
         public static async Task UpdateSMECardAsync(ITurnContext turnContext, TicketDetail ticketDetail, IMessageActivity messageActivity, string applicationBasePath, IStringLocalizer<Strings> localizer, ILogger<RemoteSupportActivityHandler> logger, CancellationToken cancellationToken)
         {
-            turnContext = turnContext ?? throw new ArgumentNullException(nameof(turnContext));
-            messageActivity = messageActivity ?? throw new ArgumentNullException(nameof(messageActivity));
             try
             {
+                turnContext = turnContext ?? throw new ArgumentNullException(nameof(turnContext));
+                messageActivity = messageActivity ?? throw new ArgumentNullException(nameof(messageActivity));
+
                 // Update the card in the SME team.
                 var updateCardActivity = new Activity(ActivityTypes.Message)
                 {
@@ -348,10 +345,8 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
                     Conversation = new ConversationAccount { Id = ticketDetail.SmeConversationId },
                     Attachments = new List<Attachment> { new SmeTicketCard(ticketDetail).GetTicketDetailsForSMEChatCard(ticketDetail, applicationBasePath, localizer) },
                 };
-
-                messageActivity.Conversation = new ConversationAccount { Id = ticketDetail.SmeConversationId };
-
                 await turnContext.Adapter.UpdateActivityAsync(turnContext, updateCardActivity, cancellationToken);
+                messageActivity.Conversation = new ConversationAccount { Id = ticketDetail.SmeConversationId };
                 await turnContext.Adapter.SendActivitiesAsync(turnContext, new Activity[] { (Activity)messageActivity }, cancellationToken);
             }
             catch (ErrorResponseException ex)
@@ -367,21 +362,6 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         }
 
         /// <summary>
-        /// Convert json string to adaptive card attachment.
-        /// </summary>
-        /// <param name="cardPayload">Card json content.</param>
-        /// <returns>An attachment with required card content.</returns>
-        public static Attachment ConvertPayloadToAttachment(string cardPayload)
-        {
-            AdaptiveCard card = AdaptiveCard.FromJson(cardPayload).Card;
-            return new Attachment()
-            {
-                Content = card,
-                ContentType = AdaptiveCard.ContentType,
-            };
-        }
-
-        /// <summary>
         /// Remove mapping elements from ticket additional details and validate input values of type 'DateTime'.
         /// </summary>
         /// <param name="additionalDetails">Ticket addition details.</param>
@@ -390,10 +370,15 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         public static string ValidateAdditionalTicketDetails(string additionalDetails, TimeSpan timeSpan)
         {
             var details = JsonConvert.DeserializeObject<Dictionary<string, string>>(additionalDetails);
+
             RemoveMappingElement(details, "command");
-            RemoveMappingElement(details, "TeamId");
+            RemoveMappingElement(details, "teamId");
             RemoveMappingElement(details, "ticketId");
-            RemoveMappingElement(details, "CardId");
+            RemoveMappingElement(details, "cardId");
+
+            RemoveMappingElement(details, "Title");
+            RemoveMappingElement(details, "Description");
+            RemoveMappingElement(details, "RequestType");
             Dictionary<string, string> keyValuePair = new Dictionary<string, string>();
             if (details != null)
             {
@@ -416,84 +401,126 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         }
 
         /// <summary>
-        /// Convert json template to Adaptive card item element.
+        /// Converts json property to adaptive card element.
         /// </summary>
-        /// <param name="cardTemplate">Adaptive card template.</param>
-        /// <returns>Adaptive card item element json string.</returns>
-        public static string ConvertToAdaptiveCardItemElement(string cardTemplate)
+        /// <param name="elements">Adaptive item element Json object.</param>
+        /// <returns>Returns adaptive card item element.</returns>
+        public static List<AdaptiveElement> ConvertToAdaptiveCardItemElement(List<JObject> elements)
         {
-            var jsonObjects = JsonConvert.DeserializeObject<List<object>>(cardTemplate);
-            var tempElements = new List<object>();
-            foreach (var item in jsonObjects)
+            var adaptiveElements = new List<AdaptiveElement>();
+            if (elements == null || elements.Count == 0)
             {
-                var mapping = JsonConvert.DeserializeObject<AdaptiveCardPlaceHolderMapper>(item.ToString());
-                if (mapping.InputType != "TextBlock")
-                {
-                    var displayName = "{\"type\":\"TextBlock\",\"text\":\"" + mapping.Id.Split('_')[0] + "\"}";
-                    tempElements.Add(JsonConvert.DeserializeObject(displayName));
-                }
-
-                tempElements.Add(item);
+                return adaptiveElements;
             }
 
-            return JsonConvert.SerializeObject(tempElements).TrimStart('[').TrimEnd(']');
+            foreach (var cardElement in elements)
+            {
+                var cardElementWithValues = JsonConvert.DeserializeObject<AdaptiveCardPlaceHolderMapper>(cardElement.ToString());
+
+                switch (cardElementWithValues.InputType)
+                {
+                    case AdaptiveTextBlock.TypeName:
+                        adaptiveElements.Add(AdaptiveElementHelper.ConvertToAdaptiveTextBlock(cardElement.ToString()));
+                        break;
+                    case AdaptiveTextInput.TypeName:
+                        adaptiveElements.Add(AdaptiveElementHelper.ConvertToAdaptiveTextInput(cardElement.ToString()));
+                        break;
+                    case AdaptiveChoiceSetInput.TypeName:
+                        adaptiveElements.Add(AdaptiveElementHelper.ConvertToAdaptiveChoiceSetInput(cardElement.ToString()));
+                        break;
+                    case AdaptiveDateInput.TypeName:
+                        adaptiveElements.Add(AdaptiveElementHelper.ConvertToAdaptiveDateInput(cardElement.ToString()));
+                        break;
+                }
+            }
+
+            return adaptiveElements;
         }
 
         /// <summary>
-        /// Convert json template to Adaptive card edit item element.
+        /// Convert json template to Adaptive card.
         /// </summary>
+        /// <param name="localizer">The current cultures' string localizer.</param>
         /// <param name="cardTemplate">Adaptive card template.</param>
-        /// <param name="ticketDetails">Ticket details Key value pair.</param>
+        /// <param name="showDateValidation">true if need to show validation message else false.</param>
+        /// <param name="ticketDetails">Ticket details key value pair.</param>
         /// <returns>Adaptive card item element json string.</returns>
-        public static string ConvertToAdaptiveCardEditItemElement(string cardTemplate, Dictionary<string, string> ticketDetails)
+        public static List<AdaptiveElement> ConvertToAdaptiveCard(IStringLocalizer<Strings> localizer, string cardTemplate, bool showDateValidation, Dictionary<string, string> ticketDetails = null)
         {
-            var jsonObjects = JsonConvert.DeserializeObject<List<object>>(cardTemplate);
-            var tempElements = new List<object>();
-            foreach (var item in jsonObjects)
+            var cardTemplates = JsonConvert.DeserializeObject<List<JObject>>(cardTemplate);
+            var cardTemplateElements = new List<JObject>();
+
+            foreach (var template in cardTemplates)
             {
-                var mapping = JsonConvert.DeserializeObject<AdaptiveCardPlaceHolderMapper>(item.ToString());
-                if (mapping.InputType != "TextBlock")
+                var templateMapping = JsonConvert.DeserializeObject<AdaptiveCardPlaceHolderMapper>(template.ToString());
+                if (templateMapping.InputType != "TextBlock")
                 {
-                    var displayName = "{\"type\":\"TextBlock\",\"text\":\"" + mapping.Id.Split('_')[0] + "\"}";
-                    var mappingValueField = JsonConvert.DeserializeObject<Dictionary<string, object>>(item.ToString());
-                    if (!mappingValueField.ContainsKey("value"))
+                    // get first observed display text if parsed from appSettings; rest all values will be set up directly in JSON payload.
+                    if (templateMapping.Id == "IssueOccuredOn")
                     {
-                        mappingValueField.Add("value", GetDictionaryValue(ticketDetails, mapping.Id));
-                    }
-                    else
-                    {
-                        mappingValueField["value"] = GetDictionaryValue(ticketDetails, mapping.Id);
+                        templateMapping.DisplayName = localizer.GetString("FirstObservedText");
                     }
 
-                    tempElements.Add(JsonConvert.DeserializeObject(displayName));
-                    tempElements.Add(JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mappingValueField)));
+                    // every input elements display name is integrated with the JSON payload
+                    // and is converted to text block corresponding to input element
+                    cardTemplateElements.Add(JObject.FromObject(new
+                    {
+                        type = AdaptiveTextBlock.TypeName,
+                        displayName = templateMapping.DisplayName,
+                        text = templateMapping.DisplayName,
+                    }));
+
+                    var templateMappingFieldValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(template.ToString());
+
+                    if (ticketDetails != null)
+                    {
+                        templateMappingFieldValues["value"] = TryParseTicketDetailsKeyValuePair(ticketDetails, templateMapping.Id);
+                    }
+
+                    cardTemplateElements.Add(JObject.FromObject(templateMappingFieldValues));
                 }
                 else
                 {
-                    tempElements.Add(item);
+                    // Enabling validation message for First observed on date time field.
+                    if (templateMapping.Id == "DateValidationMessage")
+                    {
+                        if (showDateValidation)
+                        {
+                            cardTemplateElements.Add(JObject.FromObject(new
+                            {
+                                type = AdaptiveTextBlock.TypeName,
+                                id = "DateValidationMessage",
+                                spacing = "None",
+                                color = "Attention",
+                                isVisible = "true",
+                                text = localizer.GetString("DateValidationText"),
+                            }));
+                        }
+                    }
+                    else
+                    {
+                        cardTemplateElements.Add(template);
+                    }
                 }
             }
 
-            return JsonConvert.SerializeObject(tempElements).TrimStart('[').TrimEnd(']');
+            // Parse and convert each elements to adaptive elements
+            return ConvertToAdaptiveCardItemElement(cardTemplateElements);
         }
 
         /// <summary>
-        /// Convert Date time format to adaptive card text feature.
+        /// Check and convert to DateTime adaptive text if input string is a valid date time.
         /// </summary>
         /// <param name="inputText">Input date time string.</param>
-        /// <returns>Adaptive card supported date time format.</returns>
-        public static string FormatDateStringToAdaptiveCardDateFormat(string inputText)
+        /// <returns>Adaptive card supported date time format else return sting as-is.</returns>
+        public static string AdaptiveTextParseWithDateTime(string inputText)
         {
-            try
+            if (DateTime.TryParse(inputText, out DateTime inputDateTime))
             {
-                return "{{DATE(" + DateTime.Parse(inputText, CultureInfo.InvariantCulture).ToUniversalTime().ToString(Constants.Rfc3339DateTimeFormat, CultureInfo.InvariantCulture) + ", SHORT)}}";
+                return "{{DATE(" + inputDateTime.ToUniversalTime().ToString(Constants.Rfc3339DateTimeFormat, CultureInfo.InvariantCulture) + ", SHORT)}}";
             }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch
-#pragma warning restore CA1031 // Do not catch general exception types
-            {
-                return inputText;
-            }
+
+            return inputText;
         }
 
         /// <summary>
@@ -502,11 +529,11 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         /// <param name="ticketDetails">Ticket additional details.</param>
         /// <param name="key">Dictionary key.</param>
         /// <returns>Dictionary value.</returns>
-        public static string GetDictionaryValue(Dictionary<string, string> ticketDetails, string key)
+        public static string TryParseTicketDetailsKeyValuePair(Dictionary<string, string> ticketDetails, string key)
         {
             if (ticketDetails != null && ticketDetails.ContainsKey(key))
             {
-                return EscapeCharactersInString(ticketDetails[key]);
+                return ticketDetails[key];
             }
             else
             {
@@ -530,27 +557,6 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Replace template parameters.
-        /// </summary>
-        /// <param name="input">input key.</param>
-        /// <param name="variablesToValues">key value pair.</param>
-        /// <returns>return valid string.</returns>
-        public static string ResolveTemplateParams(string input, Dictionary<string, string> variablesToValues)
-        {
-            string output = input?.Substring(0);
-
-            if (variablesToValues != null)
-            {
-                foreach (KeyValuePair<string, string> kvp in variablesToValues)
-                {
-                    output = output.Replace($"_{kvp.Key}_", kvp.Value, StringComparison.OrdinalIgnoreCase);
-                }
-            }
-
-            return output;
         }
 
         /// <summary>
@@ -588,30 +594,13 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
                             new AdaptiveTextBlock
                             {
                                 HorizontalAlignment = AdaptiveHorizontalAlignment.Left,
-                                Text = FormatDateStringToAdaptiveCardDateFormat(value),
+                                Text = AdaptiveTextParseWithDateTime(value),
                                 Wrap = true,
                             },
                         },
                     },
                 },
             };
-        }
-
-        /// <summary>
-        /// Replace double quotes and escape characters in string.
-        /// </summary>
-        /// <param name="inputString">Input string which needs to be validated.</param>
-        /// <returns>Returns valid string after escaping characters.</returns>
-        private static string EscapeCharactersInString(string inputString)
-        {
-            if (string.IsNullOrWhiteSpace(inputString))
-            {
-                return string.Empty;
-            }
-
-            inputString = JsonConvert.SerializeObject(inputString);
-            var match = Regex.Match(inputString, "^[\"](.*)\"");
-            return match.Success ? match.Groups[1].Value : string.Empty;
         }
     }
 }

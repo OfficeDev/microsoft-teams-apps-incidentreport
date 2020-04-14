@@ -11,6 +11,7 @@ import { getResourceStrings, getConfigurationsAsync } from "../api/incident-api"
 import BuildYourForm from '../components/build-form-action';
 import { getToken, authContext } from '../adal-config';
 
+
 /** State interface. */
 interface IState {
     teamId: string,
@@ -53,9 +54,9 @@ class Home extends React.Component<{}, IState>
         this.getConfigurationsAsync();
     }
 
-/** 
-*  Get resource strings according to user locale.
-* */
+    /** 
+    *  Get resource strings according to user locale.
+    * */
     getResourceStrings = async () => {
         const resourceStringsResponse = await getResourceStrings(this.bearer!);
         if (resourceStringsResponse) {

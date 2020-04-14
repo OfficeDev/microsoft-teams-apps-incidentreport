@@ -112,6 +112,7 @@ class BuildYourForm extends React.Component<ITeamProps, ITeamState>
         jsonItems.splice(index, 1);
 
         this.addComponentsToState(jsonItems);
+
     }
 
     validateUrl = () => {
@@ -138,6 +139,7 @@ class BuildYourForm extends React.Component<ITeamProps, ITeamState>
             .then(response => {
                 this.props.onPublish(response, (response) ? this.props.resourceStrings.common.successPublish : this.props.resourceStrings.common.genericError)
             });
+
     }
 
     onCancel = () => {
@@ -160,7 +162,6 @@ class BuildYourForm extends React.Component<ITeamProps, ITeamState>
             this.setState({ error: this.props.resourceStrings.buildForm.maxLengthDisplayName })
             return false;
         }
-
 
         let items = this.state.json;
         let uniqueDisplayNameCheck = (properties.displayName.toUpperCase() === this.props.resourceStrings.buildForm.titleText.toUpperCase()
@@ -358,11 +359,5 @@ class BuildYourForm extends React.Component<ITeamProps, ITeamState>
         );
     };
 }
+
 export default BuildYourForm;
-
-
-
-
-
-
-

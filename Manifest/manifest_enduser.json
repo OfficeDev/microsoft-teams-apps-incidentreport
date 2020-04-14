@@ -15,11 +15,11 @@
     "outline": "outline.png"
   },
   "name": {
-    "short": "Incident reporter"
+    "short": "Incident Reporter"
   },
   "description": {
-    "short": "Report incidents, connect with specialists immediately",
-    "full": "Report and search incidents to support teams and escalate to on call experts via group chat for urgent requests."
+    "short": "Report incidents, connect with specialists quickly",
+    "full": "Report and search incidents to support teams and escalate to on-call experts via group chat for urgent requests."
   },
   "accentColor": "#64A2CC",
   "bots": [

@@ -35,7 +35,7 @@
     "appDescription": {
       "type": "string",
       "minLength": 1,
-      "defaultValue": "Incident Reporter bot allows to report incidents, connect with specialists immediately",
+      "defaultValue": "Incident Reporter bot allows to report incidents, connect with specialists quickly",
       "metadata": {
         "description": "App description."
       }
@@ -258,7 +258,7 @@
             },
             {
               "name": "Card:DefaultCardTemplate",
-              "value": "[[{\"type\": \"Input.Date\",\"id\": \"First observed on_IssueOccuredOn\",\"max\":\"_maxDate_\",\"value\": \"_issueDate_\"},{\"type\": \"TextBlock\",\"id\": \"Validation Message_ValidationMessage\",\"text\": \"_dateValidationText_\",\"spacing\": \"None\",\"color\": \"Attention\",\"isVisible\": \"_showDateValidation_\"}]"
+              "value": "[[{\"type\": \"Input.Date\",\"displayName\":\"_FirstObservedOn_\",\"id\": \"IssueOccurredOn\"},{\"type\": \"TextBlock\",\"id\": \"DateValidationMessage\",\"text\": \"_dateValidationText_\",\"spacing\": \"None\",\"color\": \"Attention\",\"isVisible\": \"true\"}]"
             },
             {
               "name": "Storage:ConnectionString",
@@ -452,7 +452,7 @@
             },
             {
               "name": "Card:DefaultCardTemplate",
-              "value": "[[{\"type\": \"Input.Date\",\"id\": \"First observed on_IssueOccuredOn\",\"max\":\"_maxDate_\",\"value\": \"_issueDate_\"},{\"type\": \"TextBlock\",\"id\": \"Validation Message_ValidationMessage\",\"text\": \"_dateValidationText_\",\"spacing\": \"None\",\"color\": \"Attention\",\"isVisible\": \"_showDateValidation_\"}]"
+              "value": "[[{\"type\": \"Input.Date\",\"displayName\":\"_FirstObservedOn_\",\"id\": \"IssueOccurredOn\"},{\"type\": \"TextBlock\",\"id\": \"DateValidationMessage\",\"text\": \"_dateValidationText_\",\"spacing\": \"None\",\"color\": \"Attention\",\"isVisible\": \"true\"}]"
             },
             {
               "name": "AzureAd:Tenant",

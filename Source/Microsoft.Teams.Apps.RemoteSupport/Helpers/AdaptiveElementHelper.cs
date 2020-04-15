@@ -6,9 +6,9 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using AdaptiveCards;
+    using Microsoft.Teams.Apps.RemoteSupport.Cards;
     using Microsoft.Teams.Apps.RemoteSupport.Models;
     using Newtonsoft.Json;
 
@@ -33,7 +33,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
 
             string color = CardHelper.TryParseTicketDetailsKeyValuePair(result, "color");
             AdaptiveTextColor textColor;
-            if (CardHelper.TryParseTicketDetailsKeyValuePair(result, "id") == "DateValidationMessage")
+            if (CardHelper.TryParseTicketDetailsKeyValuePair(result, "id") == CardConstants.DateValidationMessageId)
             {
                 textColor = AdaptiveTextColor.Attention;
             }
@@ -83,7 +83,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
             {
                 Id = CardHelper.TryParseTicketDetailsKeyValuePair(result, "id"),
                 Placeholder = CardHelper.TryParseTicketDetailsKeyValuePair(result, "placeholder"),
-                Value = string.IsNullOrEmpty(CardHelper.TryParseTicketDetailsKeyValuePair(result, "value")) ? DateTime.Now.ToString(CultureInfo.InvariantCulture) : CardHelper.TryParseTicketDetailsKeyValuePair(result, "value"),
+                Value = CardHelper.TryParseTicketDetailsKeyValuePair(result, "value"),
                 Max = CardHelper.TryParseTicketDetailsKeyValuePair(result, "max"),
                 Min = CardHelper.TryParseTicketDetailsKeyValuePair(result, "min"),
             };

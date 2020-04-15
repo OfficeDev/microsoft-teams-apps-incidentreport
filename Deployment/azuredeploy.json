@@ -24,6 +24,21 @@
         "description": "The client secret of the bot Azure AD app."
       }
     },
+    "configAppClientId": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "metadata": {
+        "description": "The client ID of the of the configuration Azure AD app, e.g., 123e4567-e89b-12d3-a456-426655440000."
+      }
+    },
+    "configAdminUPNList": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Semicolon-delimited list of the user principal names (UPNs) allowed to access the configuration app."
+      }
+    },
     "appDisplayName": {
       "type": "string",
       "minLength": 1,

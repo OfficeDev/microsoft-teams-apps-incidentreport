@@ -307,7 +307,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
             {
                 case Constants.SendRequestAction:
                     TicketDetail newTicketDetail = JsonConvert.DeserializeObject<TicketDetail>(message.Value?.ToString());
-                    if (TicketHelper.ValidateRequestDetail(newTicketDetail, turnContext))
+                    if (TicketHelper.ValidateRequestDetail(newTicketDetail))
                     {
                         AdaptiveCardAction cardDetail = ((JObject)message.Value).ToObject<AdaptiveCardAction>();
                         logger.LogInformation("Adding new request with additional details.");

@@ -4,7 +4,6 @@
 namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
 {
     using System;
-    using System.Globalization;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Schema;
     using Microsoft.Bot.Schema.Teams;
@@ -19,23 +18,12 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         /// Validates user entered ticket details.
         /// </summary>
         /// <param name="updatedTicketDetail">Ticket details entered by the user.</param>
-        /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
-        /// <param name="existingTicketDetail">Ticket details which are existing in table.</param>
         /// <returns>Returns success/failure depending on whether validation succeeds.</returns>
-        public static bool ValidateRequestDetail(TicketDetail updatedTicketDetail, ITurnContext turnContext, TicketDetail existingTicketDetail = null)
+        public static bool ValidateRequestDetail(TicketDetail updatedTicketDetail)
         {
-            turnContext = turnContext ?? throw new ArgumentNullException(nameof(turnContext));
-            if (updatedTicketDetail == null || string.IsNullOrWhiteSpace(updatedTicketDetail.Title) || string.IsNullOrWhiteSpace(updatedTicketDetail.Description) ||
-                updatedTicketDetail.IssueOccurredOn == null || (DateTimeOffset.Compare(updatedTicketDetail.IssueOccurredOn, DateTime.Today) > 0 || string.IsNullOrEmpty(updatedTicketDetail.IssueOccurredOn.ToString(CultureInfo.InvariantCulture))))
-            {
-                return false;
-            }
-            else if (existingTicketDetail != null && DateTimeOffset.Compare(existingTicketDetail.IssueOccurredOn, ConvertToDateTimeoffset(updatedTicketDetail.IssueOccurredOn, turnContext.Activity.LocalTimestamp.Value.Offset)) < 0)
-            {
-                return false;
-            }
-
-            return true;
+            return updatedTicketDetail != null
+                && !string.IsNullOrWhiteSpace(updatedTicketDetail.Title)
+                && !string.IsNullOrWhiteSpace(updatedTicketDetail.Description);
         }
 
         /// <summary>

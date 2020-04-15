@@ -19,7 +19,6 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
     using Microsoft.Extensions.Localization;
     using Microsoft.Extensions.Logging;
     using Microsoft.Teams.Apps.RemoteSupport.Cards;
-    using Microsoft.Teams.Apps.RemoteSupport.Common;
     using Microsoft.Teams.Apps.RemoteSupport.Common.Models;
     using Microsoft.Teams.Apps.RemoteSupport.Common.Providers;
     using Microsoft.Teams.Apps.RemoteSupport.Models;
@@ -466,7 +465,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
                 if (templateMapping.InputType != "TextBlock")
                 {
                     // get first observed display text if parsed from appSettings; rest all values will be set up directly in JSON payload.
-                    if (templateMapping.Id == Constants.IssueOccurredOnId)
+                    if (templateMapping.Id == CardConstants.IssueOccurredOnId)
                     {
                         templateMapping.DisplayName = localizer.GetString("FirstObservedText");
                     }
@@ -491,14 +490,14 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
                 else
                 {
                     // Enabling validation message for First observed on date time field.
-                    if (templateMapping.Id == "DateValidationMessage")
+                    if (templateMapping.Id == CardConstants.DateValidationMessageId)
                     {
                         if (showDateValidation)
                         {
                             cardTemplateElements.Add(JObject.FromObject(new AdaptiveTextBlock
                             {
                                 Type = AdaptiveTextBlock.TypeName,
-                                Id = "DateValidationMessage",
+                                Id = CardConstants.DateValidationMessageId,
                                 Spacing = AdaptiveSpacing.None,
                                 Color = AdaptiveTextColor.Attention,
                                 IsVisible = showDateValidation,
@@ -526,7 +525,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
         {
             if (DateTime.TryParse(inputText, out DateTime inputDateTime))
             {
-                return "{{DATE(" + inputDateTime.ToUniversalTime().ToString(Constants.Rfc3339DateTimeFormat, CultureInfo.InvariantCulture) + ", SHORT)}}";
+                return "{{DATE(" + inputDateTime.ToUniversalTime().ToString(CardConstants.Rfc3339DateTimeFormat, CultureInfo.InvariantCulture) + ", SHORT)}}";
             }
 
             return inputText;

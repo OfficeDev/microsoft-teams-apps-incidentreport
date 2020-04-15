@@ -193,15 +193,15 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Cards
             var dynamicElements = new List<AdaptiveElement>();
             var ticketAdditionalFields = new List<AdaptiveElement>();
 
-            foreach (KeyValuePair<string, string> item in ticketAdditionalDetail)
+            foreach (KeyValuePair<string, string> ticketField in ticketAdditionalDetail)
             {
-                string key = item.Key;
-                if (item.Key.Equals(Constants.IssueOccurredOnId, StringComparison.OrdinalIgnoreCase))
+                string key = ticketField.Key;
+                if (ticketField.Key.Equals(CardConstants.IssueOccurredOnId, StringComparison.OrdinalIgnoreCase))
                 {
                     key = localizer.GetString("FirstObservedText");
                 }
 
-                ticketAdditionalFields.Add(CardHelper.GetAdaptiveCardColumnSet(cardElementMapping.ContainsKey(key) ? cardElementMapping[key] : key, item.Value));
+                ticketAdditionalFields.Add(CardHelper.GetAdaptiveCardColumnSet(cardElementMapping.ContainsKey(key) ? cardElementMapping[key] : key, ticketField.Value));
             }
 
             dynamicElements.AddRange(new List<AdaptiveElement>

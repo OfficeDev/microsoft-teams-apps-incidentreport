@@ -501,7 +501,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
                                 Id = "DateValidationMessage",
                                 Spacing = AdaptiveSpacing.None,
                                 Color = AdaptiveTextColor.Attention,
-                                IsVisible = true,
+                                IsVisible = showDateValidation,
                                 Text = localizer.GetString("DateValidationText"),
                             }));
                         }

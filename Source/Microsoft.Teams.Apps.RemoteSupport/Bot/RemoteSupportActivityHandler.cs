@@ -337,7 +337,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport
             {
                 case Constants.UpdateRequestAction:
                     var ticketDetail = await this.ticketDetailStorageProvider.GetTicketAsync(valuesforTaskModule.TicketId);
-                    if (TicketHelper.ValidateRequestDetail(editTicketDetail, turnContext, ticketDetail))
+                    if (TicketHelper.ValidateRequestDetail(editTicketDetail))
                     {
                         ticketDetail.AdditionalProperties = CardHelper.ValidateAdditionalTicketDetails(((JObject)activity.Value).GetValue("data", StringComparison.OrdinalIgnoreCase)?.ToString(), turnContext.Activity.LocalTimestamp.Value.Offset);
 

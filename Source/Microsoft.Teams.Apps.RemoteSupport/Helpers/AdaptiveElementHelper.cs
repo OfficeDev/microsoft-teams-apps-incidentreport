@@ -6,7 +6,6 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using AdaptiveCards;
     using Microsoft.Teams.Apps.RemoteSupport.Models;
@@ -83,7 +82,7 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Helpers
             {
                 Id = CardHelper.TryParseTicketDetailsKeyValuePair(result, "id"),
                 Placeholder = CardHelper.TryParseTicketDetailsKeyValuePair(result, "placeholder"),
-                Value = string.IsNullOrEmpty(CardHelper.TryParseTicketDetailsKeyValuePair(result, "value")) ? DateTime.Now.ToString(CultureInfo.InvariantCulture) : CardHelper.TryParseTicketDetailsKeyValuePair(result, "value"),
+                Value = CardHelper.TryParseTicketDetailsKeyValuePair(result, "value"),
                 Max = CardHelper.TryParseTicketDetailsKeyValuePair(result, "max"),
                 Min = CardHelper.TryParseTicketDetailsKeyValuePair(result, "min"),
             };

@@ -6,7 +6,6 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Cards
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using AdaptiveCards;
     using Microsoft.Bot.Schema;
     using Microsoft.Extensions.Localization;
@@ -58,15 +57,6 @@ namespace Microsoft.Teams.Apps.RemoteSupport.Cards
             else
             {
                 issueDescription = ticketDetail.Description;
-            }
-
-            if (ticketDetail.IssueOccurredOn == null || DateTimeOffset.Compare(ticketDetail.IssueOccurredOn, DateTime.Today) > 0 || string.IsNullOrEmpty(ticketDetail.IssueOccurredOn.ToString(CultureInfo.InvariantCulture)))
-            {
-                showDateValidation = true;
-            }
-            else if (existingTicketDetail != null && DateTimeOffset.Compare(ticketDetail.IssueOccurredOn, existingTicketDetail.IssueOccurredOn) > 0)
-            {
-                showDateValidation = true;
             }
 
             var ticketAdditionalDetails = JsonConvert.DeserializeObject<Dictionary<string, string>>(ticketDetail.AdditionalProperties);

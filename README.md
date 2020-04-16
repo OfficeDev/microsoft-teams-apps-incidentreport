@@ -11,7 +11,7 @@ urlFragment: microsoft-teams-apps-incidentreport
 | [Documentation](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Home) | [Deployment guide](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Deployment-Guide) | [Architecture](https://github.com/OfficeDev/microsoft-teams-apps-incidentreport/wiki/Solution-Overview) |
 | ---- | ---- | ---- |
 
-## Incident Reporter App Template
+# Incident Reporter App Template
 
 Reporting and management of incidents in an organization is often a manual process ripe for some efficiency gains. Users rely on chat based messaging, e-mail and/or other ad-hoc channels to inform necessary parties about new incidents. Additionally, the information isn't easily audit-able for root cause analyses/postmortems due to transient or one-off nature of e-mail or chat based messaging systems.
 

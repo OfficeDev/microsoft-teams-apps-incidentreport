@@ -134,7 +134,7 @@
       "metadata": {
         "description": "The URL to the GitHub repository to deploy."
       },
-      "defaultValue": "https://github.com/OfficeDev/microsoft-teams-apps-incidentreport.git"
+      "defaultValue": "https://github.com/96alice96/incident.git"
     },
     "gitBranch": {
       "type": "string",

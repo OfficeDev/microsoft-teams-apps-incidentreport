@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "name.short": "Repórter de Incidentes",
+  "description.short": "Relatar incidentes, conecte-se com especialistas rapidamente",
+  "description.full": "Relatar e Pesquisar incidentes para dar suporte a equipes e escalonar para especialistas sob chamada por meio do chat em grupo para solicitações urgentes.",
+  "bots[0].commandLists[0].commands[0].title": "Novo pedido",
+  "bots[0].commandLists[0].commands[0].description": "Faça uma solicitação para a equipe de chamada a pedido",
+  "composeExtensions[0].commands[0].title": "Ativo",
+  "composeExtensions[0].commands[0].description": "Pesquisar pedidos ativos",
+  "composeExtensions[0].commands[0].parameters[0].title": "Pesquisar",
+  "composeExtensions[0].commands[0].parameters[0].description": "Pedidos de pesquisa",
+  "composeExtensions[0].commands[1].title": "Fechado",
+  "composeExtensions[0].commands[1].description": "Pesquisar pedidos fechados",
+  "composeExtensions[0].commands[1].parameters[0].description": "Pedidos de pesquisa"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "name.short": "事件报告器",
+  "description.short": "报告事件，快速联系专家",
+  "description.full": "报告和搜索事件，以支持团队并通过群组聊天将紧急请求呈报给待命专家。",
+  "bots[0].commandLists[0].commands[0].title": "新建请求",
+  "bots[0].commandLists[0].commands[0].description": "向呼叫团队提出请求",
+  "composeExtensions[0].commands[0].title": "待处理",
+  "composeExtensions[0].commands[0].description": "搜索活动请求",
+  "composeExtensions[0].commands[0].parameters[0].title": "搜索",
+  "composeExtensions[0].commands[0].parameters[0].description": "搜索请求",
+  "composeExtensions[0].commands[1].title": "已关闭",
+  "composeExtensions[0].commands[1].description": "搜索已关闭的请求",
+  "composeExtensions[0].commands[1].parameters[0].description": "搜索请求"
+}

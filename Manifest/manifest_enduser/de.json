@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "name.short": "Vorfall-Reporter",
+  "description.short": "Vorfälle melden, schnell mit Spezialisten verbinden",
+  "description.full": "Melden und suchen Sie Vorfälle an die Support-Teams und eskalieren Sie bei dringenden Anfragen über den Gruppen-Chat an die Rufbereitschaftsexperten.",
+  "bots[0].commandLists[0].commands[0].title": "Neue Anforderung",
+  "bots[0].commandLists[0].commands[0].description": "Eine Anfrage zum Rufbereitschaftsteam tätigen",
+  "composeExtensions[0].commands[0].title": "Aktiv",
+  "composeExtensions[0].commands[0].description": "Aktive Anforderungen durchsuchen",
+  "composeExtensions[0].commands[0].parameters[0].title": "Suchen",
+  "composeExtensions[0].commands[0].parameters[0].description": "Suchanforderungen",
+  "composeExtensions[0].commands[1].title": "Geschlossen",
+  "composeExtensions[0].commands[1].description": "Geschlossene Anforderungen durchsuchen",
+  "composeExtensions[0].commands[1].parameters[0].description": "Suchanforderungen"
+}

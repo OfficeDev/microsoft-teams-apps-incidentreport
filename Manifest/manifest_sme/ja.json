@@ -15,6 +15,6 @@
   "composeExtensions[0].commands[1].parameters[0].description": "要求の検索",
   "composeExtensions[0].commands[2].title": "未割り当て",
   "composeExtensions[0].commands[2].description": "エキスパートにまだ割り当てられていない未割り当ての要求を検索する",
-  "composeExtensions[0].commands[2].parameters[0].title": "検索"
+  "composeExtensions[0].commands[2].parameters[0].title": "検索",
   "composeExtensions[0].commands[2].parameters[0].description": "要求の検索"
 }

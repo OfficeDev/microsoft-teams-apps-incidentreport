@@ -15,6 +15,6 @@
   "composeExtensions[0].commands[1].parameters[0].description": "Recherchez parmi les demandes",
   "composeExtensions[0].commands[2].title": "Non affectées",
   "composeExtensions[0].commands[2].description": "Recherchez parmi les demandes qui ne sont pas encore affectées à un expert",
-  "composeExtensions[0].commands[2].parameters[0].title": "Rechercher"
+  "composeExtensions[0].commands[2].parameters[0].title": "Rechercher",
   "composeExtensions[0].commands[2].parameters[0].description": "Recherchez parmi les demandes"
 }

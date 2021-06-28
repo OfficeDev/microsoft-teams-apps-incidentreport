@@ -15,6 +15,6 @@
   "composeExtensions[0].commands[1].parameters[0].description": "Solicitudes de búsqueda",
   "composeExtensions[0].commands[2].title": "Sin asignar",
   "composeExtensions[0].commands[2].description": "Buscar solicitudes sin asignar aún no asignadas a un experto",
-  "composeExtensions[0].commands[2].parameters[0].title": "Buscar"
+  "composeExtensions[0].commands[2].parameters[0].title": "Buscar",
   "composeExtensions[0].commands[2].parameters[0].description": "Solicitudes de búsqueda"
 }

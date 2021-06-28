@@ -15,6 +15,6 @@
   "composeExtensions[0].commands[1].parameters[0].description": "Suchanforderungen",
   "composeExtensions[0].commands[2].title": "Nicht zugeordnet",
   "composeExtensions[0].commands[2].description": "Nicht zugewiesene Suchanforderungen suchen, die noch nicht einem Experten zugewiesen sind",
-  "composeExtensions[0].commands[2].parameters[0].title": "Suchen"
+  "composeExtensions[0].commands[2].parameters[0].title": "Suchen",
   "composeExtensions[0].commands[2].parameters[0].description": "Suchanforderungen"
 }

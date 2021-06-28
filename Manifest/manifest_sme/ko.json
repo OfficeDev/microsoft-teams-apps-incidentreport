@@ -15,6 +15,6 @@
   "composeExtensions[0].commands[1].parameters[0].description": "검색 요청",
   "composeExtensions[0].commands[2].title": "할당 해제됨",
   "composeExtensions[0].commands[2].description": "검색되지 않은 요청이 전문가에 아직 할당되지 않았습니다.",
-  "composeExtensions[0].commands[2].parameters[0].title": "검색"
+  "composeExtensions[0].commands[2].parameters[0].title": "검색",
   "composeExtensions[0].commands[2].parameters[0].description": "검색 요청"
 }

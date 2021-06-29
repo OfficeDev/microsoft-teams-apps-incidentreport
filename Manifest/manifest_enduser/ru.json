@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "name.short": "Создатель отчета об инциденте",
+  "description.short": "Сообщайте об инцидентах, быстро связывайтесь со специалистами",
+  "description.full": "Сообщайте об инцидентах и находите их с помощью команд технической поддержки, а также переводите их дежурным экспертам посредством групповых чатов для срочных запросов.",
+  "bots[0].commandLists[0].commands[0].title": "Новый запрос",
+  "bots[0].commandLists[0].commands[0].description": "Создание запроса дежурной команде",
+  "composeExtensions[0].commands[0].title": "Активно",
+  "composeExtensions[0].commands[0].description": "Поиск активных запросов",
+  "composeExtensions[0].commands[0].parameters[0].title": "Поиск",
+  "composeExtensions[0].commands[0].parameters[0].description": "Поиск запросов",
+  "composeExtensions[0].commands[1].title": "Закрыто",
+  "composeExtensions[0].commands[1].description": "Поиск закрытых запросов",
+  "composeExtensions[0].commands[1].parameters[0].description": "Поиск запросов"
+}

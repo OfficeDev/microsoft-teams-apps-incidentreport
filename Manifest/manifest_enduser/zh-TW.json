@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "name.short": "事件報告者",
+  "description.short": "回報事件，迅速與專家交流",
+  "description.full": "對於緊急要求透過群組聊天回報及搜尋事件，以支援團隊並呈報給待命專家。",
+  "bots[0].commandLists[0].commands[0].title": "新增要求",
+  "bots[0].commandLists[0].commands[0].description": "向待命小組提出要求",
+  "composeExtensions[0].commands[0].title": "使用中",
+  "composeExtensions[0].commands[0].description": "搜尋使用中的要求",
+  "composeExtensions[0].commands[0].parameters[0].title": "搜尋",
+  "composeExtensions[0].commands[0].parameters[0].description": "搜尋要求",
+  "composeExtensions[0].commands[1].title": "已關閉",
+  "composeExtensions[0].commands[1].description": "搜尋已關閉的要求",
+  "composeExtensions[0].commands[1].parameters[0].description": "搜尋要求"
+}

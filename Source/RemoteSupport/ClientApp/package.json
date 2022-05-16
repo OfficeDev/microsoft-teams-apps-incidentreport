@@ -6,7 +6,7 @@
 		"@fluentui/react": "^0.43.2",
 		"@microsoft/applicationinsights-react-js": "^2.3.1",
 		"@microsoft/teams-js": "^1.5.2",
-		"axios": "^0.21.1",
+		"axios": "^0.21.2",
 		"classnames": "^2.2.6",
 		"react": "^16.10.2",
 		"react-adal": "^0.5.0",
